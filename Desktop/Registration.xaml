@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop"
         mc:Ignorable="d"
-        Title="Registration" Height="450" Width="600">
+        Title="Registration" Height="450" Width="650">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -125,12 +125,14 @@
         <Label Content="Ваша почта" HorizontalAlignment="Left" Margin="302,138,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="306,202,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="18"/>
         <Label Content="Повторите пароль" HorizontalAlignment="Left" Margin="302,261,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <TextBox HorizontalAlignment="Left" Margin="306,115,0,0" TextWrapping="Wrap" Text="Введите имя пользователя" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="185" Foreground="#FFD8D8D8" FontSize="14"/>
-        <TextBox HorizontalAlignment="Left" Margin="306,177,0,0" TextWrapping="Wrap" Text="exam@yandex.ru" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="120" Foreground="#FFD8D8D8" FontSize="14"/>
-        <TextBox HorizontalAlignment="Left" Margin="306,241,0,0" TextWrapping="Wrap" Text="Введите пароль" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="120" FontSize="14" Foreground="#FFE2E1E8"/>
-        <TextBox HorizontalAlignment="Left" Margin="306,295,0,0" TextWrapping="Wrap" Text="Повторите пароль" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="140" Foreground="#FFE2E1E8" FontSize="14"/>
-        <Button Style="{DynamicResource кнока}" Content="Зарегестрироваться" HorizontalAlignment="Left" Margin="306,331,0,0" VerticalAlignment="Top" Width="213" Height="33" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="14"/>
-        <Button Style="{DynamicResource кнопка}" Content="Назад" Margin="306,369,81,0" VerticalAlignment="Top" Height="34" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="14"/>
-
+        <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Margin="306,115,0,0" TextWrapping="Wrap" Text="Введите имя пользователя" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="185" Foreground="#FFD8D8D8" FontSize="14"/>
+        <TextBox x:Name="emailTextBox"  HorizontalAlignment="Left" Margin="306,177,0,0" TextWrapping="Wrap" Text="exam@yandex.ru" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="120" Foreground="#FFD8D8D8" FontSize="14"/>
+        <TextBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="306,241,0,0" TextWrapping="Wrap" Text="Введите пароль" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="120" FontSize="14" Foreground="#FFE2E1E8"/>
+        <TextBox x:Name="repeatpassTextBox" HorizontalAlignment="Left" Margin="306,295,0,0" TextWrapping="Wrap" Text="Повторите пароль" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="140" Foreground="#FFE2E1E8" FontSize="14"/>
+        <Button Style="{DynamicResource кнока}" Content="Зарегестрироваться" HorizontalAlignment="Left" Margin="306,331,0,0" VerticalAlignment="Top" Width="263" Height="33" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="14" Click="Button_Click"/>
+        <Button Style="{DynamicResource кнопка}" Content="Назад" Margin="306,369,81,0" VerticalAlignment="Top" Height="34" Width="263" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="14" Click="Button_Click_1"/>
+        <Label x:Name="nameErrorLabel" Content="" HorizontalAlignment="Left" Margin="453,135,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+        <Label x:Name="emailError" Content="" HorizontalAlignment="Left" Margin="426,159,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+        <Label x:Name="passwordError" Content="" HorizontalAlignment="Left" Margin="389,183,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
     </Grid>
 </Window>

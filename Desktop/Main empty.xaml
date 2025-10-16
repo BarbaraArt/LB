@@ -68,7 +68,7 @@
         <Label Content="Создайте свою первую " HorizontalAlignment="Left" Margin="113,129,0,0" VerticalAlignment="Top" FontSize="24" Width="418"/>
         <Label Content="задачу!" HorizontalAlignment="Left" Margin="113,157,0,0" VerticalAlignment="Top" FontSize="24"/>
         <Image HorizontalAlignment="Left" Height="54" Margin="10,10,0,0" VerticalAlignment="Top" Width="65" Source="/чел.png"/>
-        <Button Style="{DynamicResource кнопка3}" Content="Создать первую задачу" HorizontalAlignment="Center" Margin="0,247,0,0" VerticalAlignment="Top" Height="31" Width="184" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="14"/>
+        <Button Style="{DynamicResource кнопка3}" Content="Создать первую задачу" HorizontalAlignment="Center" Margin="0,247,0,0" VerticalAlignment="Top" Height="31" Width="184" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="14" Click="Button_Click"/>
 
     </Grid>
 </Window>
