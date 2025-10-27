@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Desktop.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace Desktop
     /// </summary>
     public partial class Registration : Window
     {
+        private UserRepository userRepository = new UserRepository();
         public Registration()
         {
             InitializeComponent();
@@ -60,11 +62,28 @@ namespace Desktop
 
             if (isValid)
             {
-                Main_empty mainEmptyWindow = new Main_empty();
-                mainEmptyWindow.Show(); // Открываем новое окно
-                this.Close();
+                bool registrationSuccessful = userRepository.RegisterUser(email, password);
+
+                if (registrationSuccessful)
+                {
+                    MessageBox.Show("Регистрация прошла успешно!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Main_empty mainEmptyWindow = new Main_empty();
+                    mainEmptyWindow.Show(); // Открываем новое окно
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Пользователь с таким email уже существует.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                // Если не все поля валидны, выводим общее сообщение об ошибке.
+                MessageBox.Show("Пожалуйста, проверьте правильность заполнения всех полей.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        
         private bool IsValidName(string name)
         {
             return !string.IsNullOrEmpty(name) && name.Length >= 3;

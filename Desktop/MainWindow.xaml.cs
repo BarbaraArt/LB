@@ -83,6 +83,7 @@ namespace Desktop
             Registration registrationWindow = new Registration();
             registrationWindow.Show(); // Открываем новое окно
             this.Close();
+
         }
     }
 }
