@@ -26,7 +26,9 @@ namespace Desktop
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Main main = new Main();
+            main.Show(); // Открываем новое окно
+            this.Close();
         }
     }
 }

@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop"
         mc:Ignorable="d"
-        Title="Main" Height="489" Width="677">
+        Title="Main" Height="489" Width="682">
     <Window.Resources>
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -175,26 +176,109 @@
     </Window.Resources>
     <Grid Margin="0,0,10,0" Height="458" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="97*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="120"/>
+            <!-- Сайдбар -->
+            <ColumnDefinition Width="*"/>
+            <!-- Список задач -->
+            <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
-        <Image HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="84" Source="/чел.png"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="16,75,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label Content="Задачи" HorizontalAlignment="Left" Margin="21,122,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FF6D2929"/>
-        <Label Content="История" HorizontalAlignment="Left" Margin="21,177,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FF6D2929"/>
-        <Button Style="{DynamicResource кнопка+}" Content="+" HorizontalAlignment="Left" Margin="30,384,0,0" VerticalAlignment="Top" Height="54" Width="110" FontSize="22" Background="#FFF86B6B" Foreground="White" BorderBrush="{x:Null}"/>
-        <Rectangle HorizontalAlignment="Left" Height="344" Margin="398,90,0,0" Stroke="Black" VerticalAlignment="Top" Width="250" Grid.ColumnSpan="2"/>
-        <Label Content="Заголовок" HorizontalAlignment="Left" Margin="466,103,0,0" VerticalAlignment="Top" FontSize="22" FontFamily="Bahnschrift"/>
-        <Label Content="00:00" HorizontalAlignment="Left" Margin="416,151,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label Content="01 Января 2025" HorizontalAlignment="Left" Margin="416,171,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label Content="Текст текст текст" HorizontalAlignment="Left" Margin="416,212,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Button Style="{DynamicResource кнопаГот}" Content="Готово" HorizontalAlignment="Left" Margin="438,346,0,0" VerticalAlignment="Top" Height="33" Width="173" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
-        <Button Style="{DynamicResource кп}" Content="Удалить" HorizontalAlignment="Left" Margin="438,388,0,0" VerticalAlignment="Top" Width="173" Height="33" Background="#FFF96060" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
-        <Label Content="Дом" HorizontalAlignment="Left" Margin="119,55,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FF599C35"/>
-        <Label Content="Работа" HorizontalAlignment="Left" Margin="172,55,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FFE87B2E"/>
-        <Label Content="Учеба" HorizontalAlignment="Left" Margin="249,55,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FF3254DC"/>
-        <Label Content="Отдых" HorizontalAlignment="Left" Margin="323,55,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FFB021D2"/>
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Height="307" Margin="119,104,0,0" VerticalAlignment="Top" Width="260"/>
+        <StackPanel Grid.Column="0" Background="White" Margin="0,0,1,0">
+            <Ellipse Width="60" Height="60" Margin="0,20,0,5" Stroke="Black" StrokeThickness="1">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <!-- Пункт 8: Имя пользователя -->
+            <TextBlock Text="{Binding UserName}" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,30"/>
 
+            <Button Content="Задачи" Background="Transparent" BorderBrush="Transparent" Margin="5" FontSize="16"/>
+            <Button Content="История" Background="Transparent" BorderBrush="Transparent" Margin="5" FontSize="16"/>
+
+            <!-- Кнопка + -->
+            <Button Width="60" Height="60" Background="#FF6B6B" Foreground="White" 
+                    Content="+" FontSize="20" Margin="0,150,0,0" BorderBrush="{x:Null}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="50"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+
+        <!-- Центральная панель: Категории и Список -->
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Категории -->
+                <RowDefinition Height="*"/>
+                <!-- Список -->
+            </Grid.RowDefinitions>
+
+            <!-- Пункт 4: Категории вверху -->
+            <ItemsControl ItemsSource="{Binding Categories}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Margin="10,0" Foreground="Gray" Cursor="Hand"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Пункт 4: Список задач со скроллом -->
+            <ListBox Grid.Row="1" ItemsSource="{Binding Tasks}" 
+                     SelectedItem="{Binding SelectedTask}"
+                     BorderThickness="0" Background="Transparent" Margin="0,20,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Пункт 4: CheckBox -->
+                                <CheckBox IsChecked="{Binding IsCompleted}" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Time}" FontSize="12" Foreground="Gray"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <!-- Пункт 5: Детальное описание справа -->
+        <Border Grid.Column="2" Background="White" Margin="10,40,10,40" CornerRadius="5" Padding="15" 
+                Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverter}}">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding SelectedTask.Title}" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBlock Text="{Binding SelectedTask.Time}" Foreground="Gray"/>
+                    <TextBlock Text="{Binding SelectedTask.Date}" Foreground="Gray" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding SelectedTask.Description}" TextWrapping="Wrap" Margin="0,10"/>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Bottom">
+                    <!-- Пункт 6: Кнопка Готово -->
+                    <Button Content="Готово" Command="{Binding CompleteCommand}" Background="#FF6B6B" Foreground="White" Height="35" Margin="0,5" BorderBrush="{x:Null}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <!-- Пункт 7: Кнопка Удалить -->
+                    <Button Content="Удалить" Command="{Binding DeleteCommand}" Background="#FF6B6B" Foreground="White" Height="35" Margin="0,5" BorderBrush="{x:Null}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

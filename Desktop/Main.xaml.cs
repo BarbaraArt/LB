@@ -24,13 +24,9 @@ namespace Desktop
         public Main()
         {
             InitializeComponent();
-              
+            DataContext = new ViewModel();
         }
-        public class TaskItem
-        {
-            public string Title { get; set; }
-            public string Time { get; set; }
-        }
+       
 
        
         private void Button_Click(object sender, RoutedEventArgs e)
