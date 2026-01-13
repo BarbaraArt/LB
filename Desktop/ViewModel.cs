@@ -26,24 +26,33 @@ namespace Desktop
 
         public ICommand CompleteCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand AddTaskCommand { get; }
 
         public ViewModel()
         {
             Categories = new ObservableCollection<string> { "Дом", "Работа", "Учеба", "Отдых" };
 
-            Tasks = new ObservableCollection<TaskItem>
-            {
-                new TaskItem { Title = "Go fishing with Stephen", Time = "9:00am", Date = "01 Января 2022", Description = "Поехать на рыбалку с друзьями в субботу.", Category = "Отдых" },
-                new TaskItem { Title = "Read the book Zlatan", Time = "11:00am", Date = "02 Января 2022", Description = "Прочитать 50 страниц биографии Ибрагимовича.", IsCompleted = true },
-                new TaskItem { Title = "Meet with design team", Time = "14:00pm", Date = "03 Января 2022", Description = "Обсудить новый макет приложения." }
-            };
+            Tasks = new ObservableCollection<TaskItem>();
+            //{
+            //    new TaskItem { Title = "Go fishing with Stephen", Time = "9:00am", Date = "01 Января 2022", Description = "Поехать на рыбалку с друзьями в субботу.", Category = "Отдых" },
+            //    new TaskItem { Title = "Read the book Zlatan", Time = "11:00am", Date = "02 Января 2022", Description = "Прочитать 50 страниц биографии Ибрагимовича.", IsCompleted = true },
+            //    new TaskItem { Title = "Meet with design team", Time = "14:00pm", Date = "03 Января 2022", Description = "Обсудить новый макет приложения." }
+            //};
 
-            CompleteCommand = new RelayCommand(o => {
-                if (SelectedTask != null) SelectedTask.IsCompleted = true;
-            });
+            //CompleteCommand = new RelayCommand(o => {
+            //    if (SelectedTask != null) SelectedTask.IsCompleted = true;
+            //});
 
-            DeleteCommand = new RelayCommand(o => {
-                if (SelectedTask != null) Tasks.Remove(SelectedTask);
+            //DeleteCommand = new RelayCommand(o => {
+            //    if (SelectedTask != null) Tasks.Remove(SelectedTask);
+            //});
+
+            AddTaskCommand = new RelayCommand(o => {
+                AddTaskWindow addWindow = new AddTaskWindow();
+                if (addWindow.ShowDialog() == true) // Если нажали "Создать"
+                {
+                    Tasks.Add(addWindow.NewTask); // Добавляем задачу в список
+                }
             });
         }
 
@@ -63,5 +72,7 @@ namespace Desktop
         public void Execute(object parameter) => _execute(parameter);
         public event System.EventHandler CanExecuteChanged;
     }
+
+
 }
 

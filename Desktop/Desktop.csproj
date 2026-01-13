@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddTaskWindow.xaml.cs">
+      <DependentUpon>AddTaskWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Main empty.xaml.cs">
       <DependentUpon>Main empty.xaml</DependentUpon>
     </Compile>
@@ -68,6 +71,10 @@
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="TaskItem.cs" />
     <Compile Include="ViewModel.cs" />
+    <Page Include="AddTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main empty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
