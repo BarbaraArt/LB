@@ -28,13 +28,18 @@
             </TextBox>
 
             <TextBlock Text="Категория" Margin="0,15,0,5"/>
-            <TextBox x:Name="CategoryBox" Height="40" VerticalContentAlignment="Center" Padding="10" BorderBrush="{x:Null}">
-                <TextBox.Resources>
+            <ComboBox x:Name="CategoryCombo" Height="40" VerticalContentAlignment="Center" Padding="10">
+                <ComboBox.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="15"/>
                     </Style>
-                </TextBox.Resources>
-            </TextBox>
+                </ComboBox.Resources>
+                <!-- Список категорий -->
+                <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Дом</System:String>
+                <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Работа</System:String>
+                <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Учеба</System:String>
+                <System:String xmlns:System="clr-namespace:System;assembly=mscorlib">Отдых</System:String>
+            </ComboBox>
 
             <TextBlock Text="Описание" Margin="0,15,0,5"/>
             <TextBox x:Name="DescBox" Height="84" TextWrapping="Wrap" Padding="10" AcceptsReturn="True" BorderBrush="{x:Null}">

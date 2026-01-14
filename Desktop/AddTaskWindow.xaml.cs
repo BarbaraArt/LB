@@ -30,7 +30,7 @@ namespace Desktop
             NewTask = new TaskItem
             {
                 Title = TitleBox.Text,
-                Category = CategoryBox.Text,
+                Category = CategoryCombo.Text,
                 Description = DescBox.Text,
                 Time = TimeBox.Text,
                 Date = TaskCalendar.SelectedDate?.ToShortDateString() ?? DateTime.Now.ToShortDateString(),

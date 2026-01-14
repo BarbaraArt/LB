@@ -7,17 +7,19 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Data;
 
 namespace Desktop
 {
     public class ViewModel : INotifyPropertyChanged
     {
         private TaskItem _selectedTask;
+        private bool _showOnlyCompleted = false;
         public string UserName { get; set; } = "Alex";
 
         public ObservableCollection<TaskItem> Tasks { get; set; }
         public ObservableCollection<string> Categories { get; set; }
-
+        public ICollectionView FilteredTasks { get; set; }
         public TaskItem SelectedTask
         {
             get => _selectedTask;
@@ -27,40 +29,73 @@ namespace Desktop
         public ICommand CompleteCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand AddTaskCommand { get; }
+        public ICommand ShowTasksCommand { get; }
+        public ICommand ShowHistoryCommand { get; }
 
         public ViewModel()
         {
             Categories = new ObservableCollection<string> { "Дом", "Работа", "Учеба", "Отдых" };
 
             Tasks = new ObservableCollection<TaskItem>();
-            //{
-            //    new TaskItem { Title = "Go fishing with Stephen", Time = "9:00am", Date = "01 Января 2022", Description = "Поехать на рыбалку с друзьями в субботу.", Category = "Отдых" },
-            //    new TaskItem { Title = "Read the book Zlatan", Time = "11:00am", Date = "02 Января 2022", Description = "Прочитать 50 страниц биографии Ибрагимовича.", IsCompleted = true },
-            //    new TaskItem { Title = "Meet with design team", Time = "14:00pm", Date = "03 Января 2022", Description = "Обсудить новый макет приложения." }
-            //};
+            FilteredTasks = CollectionViewSource.GetDefaultView(Tasks);
+            FilteredTasks.Filter = TaskFilter;
 
-            //CompleteCommand = new RelayCommand(o => {
-            //    if (SelectedTask != null) SelectedTask.IsCompleted = true;
-            //});
+            Tasks = new ObservableCollection<TaskItem>();
 
-            //DeleteCommand = new RelayCommand(o => {
-            //    if (SelectedTask != null) Tasks.Remove(SelectedTask);
-            //});
+            // Настраиваем фильтрацию
+            FilteredTasks = CollectionViewSource.GetDefaultView(Tasks);
+            FilteredTasks.Filter = TaskFilter;
+
+            // Команда "Готово"
+            CompleteCommand = new RelayCommand(o => {
+                if (SelectedTask != null)
+                {
+                    SelectedTask.IsCompleted = true;
+                    FilteredTasks.Refresh(); // Обновляем список, чтобы задача исчезла из текущего вида
+                    SelectedTask = null;    // Снимаем выделение
+                }
+            });
+
+            DeleteCommand = new RelayCommand(o => {
+                if (SelectedTask != null) Tasks.Remove(SelectedTask);
+            });
+
+            // Команды переключения вкладок
+            ShowTasksCommand = new RelayCommand(o => {
+                _showOnlyCompleted = false;
+                FilteredTasks.Refresh();
+            });
+
+            ShowHistoryCommand = new RelayCommand(o => {
+                _showOnlyCompleted = true;
+                FilteredTasks.Refresh();
+            });
 
             AddTaskCommand = new RelayCommand(o => {
                 AddTaskWindow addWindow = new AddTaskWindow();
-                if (addWindow.ShowDialog() == true) // Если нажали "Создать"
+                if (addWindow.ShowDialog() == true)
                 {
-                    Tasks.Add(addWindow.NewTask); // Добавляем задачу в список
+                    Tasks.Add(addWindow.NewTask);
+                    FilteredTasks.Refresh();
                 }
             });
         }
+        private bool TaskFilter(object obj)
+        {
+            if (obj is TaskItem task)
+            {
+                if (_showOnlyCompleted)
+                    return task.IsCompleted; // В истории только выполненные
+                else
+                    return !task.IsCompleted; // В задачах только невыполненные
+            }
+            return false;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
+        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
     }
 
     // Простая реализация ICommand

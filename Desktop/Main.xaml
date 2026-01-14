@@ -189,14 +189,13 @@
                 </Ellipse.Fill>
             </Ellipse>
             <!-- Пункт 8: Имя пользователя -->
-            <TextBlock Text="{Binding UserName}" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,30"/>
-
-            <Button Content="Задачи" Background="Transparent" BorderBrush="Transparent" Margin="5" FontSize="16"/>
-            <Button Content="История" Background="Transparent" BorderBrush="Transparent" Margin="5" FontSize="16"/>
+            <TextBlock Text="{Binding UserName}" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,10"/>
+            <Button Content="Задачи"  Command="{Binding ShowTasksCommand}" Background="Transparent" BorderBrush="Transparent"  Padding="30,10" HorizontalContentAlignment="Left" FontSize="14"/>
+            <Button Content="История" Command="{Binding ShowHistoryCommand}" Background="Transparent" BorderBrush="Transparent"  Padding="30,10" HorizontalContentAlignment="Left" FontSize="14"/>
 
             <!-- Кнопка + -->
-            <Button Width="60" Height="60" Background="#FF6B6B" Foreground="White" 
-                    Content="+" FontSize="20" Margin="0,150,0,0" BorderBrush="{x:Null}" Command="{Binding AddTaskCommand}" 
+            <Button Width="54" Height="55" Background="#FF6B6B" Foreground="White" 
+                    Content="+" FontSize="20" HorizontalAlignment="Center" Margin="0,180,0,0" BorderBrush="{x:Null}" Command="{Binding AddTaskCommand}" 
         Style="{StaticResource кнопка+}" >
                 <Button.Resources>
                     <Style TargetType="Border">
@@ -207,7 +206,7 @@
         </StackPanel>
 
         <!-- Центральная панель: Категории и Список -->
-        <Grid Grid.Column="1" Margin="20">
+        <Grid Grid.Column="1" Margin="20, 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <!-- Категории -->
@@ -224,23 +223,64 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Margin="10,0" Foreground="Gray" Cursor="Hand"/>
+                        <TextBlock Text="{Binding}" Margin="15,5" FontWeight="Bold" FontSize="12">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <!-- Цвет по умолчанию -->
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding}" Value="Дом">
+                                            <Setter Property="Foreground" Value="#98C18E"/>
+
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="Работа">
+                                            <Setter Property="Foreground" Value="#E08E79"/>
+
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="Учеба">
+                                            <Setter Property="Foreground" Value="#79A1E0"/>
+
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="Отдых">
+                                            <Setter Property="Foreground" Value="#C679E0"/>
+
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
             <!-- Пункт 4: Список задач со скроллом -->
-            <ListBox Grid.Row="1" ItemsSource="{Binding Tasks}" 
-                     SelectedItem="{Binding SelectedTask}"
-                     BorderThickness="0" Background="Transparent" Margin="0,20,0,0">
+            <ListBox Grid.Row="1" ItemsSource="{Binding FilteredTasks}" 
+         SelectedItem="{Binding SelectedTask}" 
+                     BorderThickness="0" Background="Transparent" Padding="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="10">
+                        <Border  Background="White" CornerRadius="4" Margin="10,5" Padding="10">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.3" Color="Black"/>
+                            </Border.Effect>
                             <StackPanel Orientation="Horizontal">
                                 <!-- Пункт 4: CheckBox -->
                                 <CheckBox IsChecked="{Binding IsCompleted}" VerticalAlignment="Center" Margin="0,0,15,0"/>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        <Setter Property="Foreground" Value="Gray"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
                                     <TextBlock Text="{Binding Time}" FontSize="12" Foreground="Gray"/>
                                 </StackPanel>
                             </StackPanel>
