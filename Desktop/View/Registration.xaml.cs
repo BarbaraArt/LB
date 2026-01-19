@@ -14,12 +14,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Desktop
+namespace Desktop.View
 {
     /// <summary>
     /// Логика взаимодействия для Registration.xaml
     /// </summary>
-    public partial class Registration : Window
+    public partial class Registration : Page
     {
         private UserRepository userRepository = new UserRepository();
         public Registration()
@@ -68,9 +68,7 @@ namespace Desktop
                 {
                     MessageBox.Show("Регистрация прошла успешно!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    Main_empty mainEmptyWindow = new Main_empty();
-                    mainEmptyWindow.Show(); // Открываем новое окно
-                    this.Close();
+                    this.NavigationService.Navigate(new Main());
                 }
                 else
                 {
@@ -107,9 +105,7 @@ namespace Desktop
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show(); // Открываем новое окно
-            this.Close();
+            this.NavigationService.Navigate(new Main());
         }
     }
     

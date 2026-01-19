@@ -1,14 +1,14 @@
-﻿<Window x:Class="Desktop.Main"
+﻿<Page x:Class="Desktop.View.Main"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Desktop"
         Title="Main" Height="489" Width="682">
 
     <!-- Ссылка на словарь ресурсов (если не подключен в App.xaml) -->
-    <Window.Resources>
+    <Page.Resources>
         
         <ResourceDictionary Source="MainResources.xaml"/>
-    </Window.Resources>
+    </Page.Resources>
 
     <Grid Margin="0,0,10,0">
         <Grid.ColumnDefinitions>
@@ -99,4 +99,4 @@
             </Grid>
         </Border>
     </Grid>
-</Window>
+</Page>

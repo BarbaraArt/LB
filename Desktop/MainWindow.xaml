@@ -119,6 +119,7 @@
         </Style>
     </Window.Resources>
     <Grid>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
         <Image HorizontalAlignment="Left" Height="130" Margin="36,34,0,0" VerticalAlignment="Top" Width="142" Source="/Снимок экрана 2025-10-14 204257.png"/>
         <Label Content="Добро пожаловать!" HorizontalAlignment="Left" Margin="300,47,0,0" VerticalAlignment="Top" FontSize="24"/>
         <Label Content="Почта" HorizontalAlignment="Left" Margin="300,130,0,0" VerticalAlignment="Top" FontSize="18"/>

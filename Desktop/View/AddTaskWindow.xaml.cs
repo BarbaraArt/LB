@@ -12,21 +12,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Desktop
+namespace Desktop.View
 {
     /// <summary>
     /// Логика взаимодействия для AddTaskWindow.xaml
     /// </summary>
-    public partial class AddTaskWindow : Window
+    public partial class AddTaskWindow : Page
     {
         public TaskItem NewTask { get; private set; }
+        public event EventHandler<TaskItem> TaskCreated;
+
+        public event EventHandler Cancelled;
+
         public AddTaskWindow()
         {
             InitializeComponent();
         }
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            // Собираем данные из полей
             NewTask = new TaskItem
             {
                 Title = TitleBox.Text,
@@ -37,13 +40,18 @@ namespace Desktop
                 IsCompleted = false
             };
 
-            this.DialogResult = true; 
+            // Вызываем событие, что задача создана
+            TaskCreated?.Invoke(this, NewTask);
+
+            // Перейти назад или на нужную страницу
+            if (this.NavigationService.CanGoBack)
+                this.NavigationService.GoBack();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
-            this.Close();
+            if (this.NavigationService.CanGoBack)
+                this.NavigationService.GoBack();
         }
     }
 }

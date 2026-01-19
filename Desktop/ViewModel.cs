@@ -8,11 +8,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Data;
+using Desktop.View;
+using System.Windows.Controls;
 
 namespace Desktop
 {
     public class ViewModel : INotifyPropertyChanged
     {
+        public Action<Page> NavigateToPage { get; set; }
         private TaskItem _selectedTask;
         private bool _showOnlyCompleted = false;
         public string UserName { get; set; } = "Alex";
@@ -71,14 +74,20 @@ namespace Desktop
                 FilteredTasks.Refresh();
             });
 
-            AddTaskCommand = new RelayCommand(o => {
-                AddTaskWindow addWindow = new AddTaskWindow();
-                if (addWindow.ShowDialog() == true)
+            AddTaskCommand = new RelayCommand(o =>
+            {
+                var addPage = new AddTaskWindow();
+
+                // Подписываемся на событие создания задачи
+                addPage.TaskCreated += (sender, newTask) =>
                 {
-                    Tasks.Add(addWindow.NewTask);
+                    Tasks.Add(newTask);
                     FilteredTasks.Refresh();
-                }
-            });
+                };
+
+                // Вызываем навигацию в View через делегат
+                NavigateToPage?.Invoke(addPage);
+            }); ;
         }
         private bool TaskFilter(object obj)
         {

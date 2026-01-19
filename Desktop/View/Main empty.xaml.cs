@@ -12,12 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Desktop
+namespace Desktop.View
 {
     /// <summary>
     /// Логика взаимодействия для Main_empty.xaml
     /// </summary>
-    public partial class Main_empty : Window
+    public partial class Main_empty : Page
     {
         public Main_empty()
         {
@@ -26,9 +26,7 @@ namespace Desktop
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Main main = new Main();
-            main.Show(); // Открываем новое окно
-            this.Close();
+            this.NavigationService.Navigate(new Main());
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Desktop.View;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -25,6 +26,19 @@ namespace Desktop
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new AddTaskWindow());
+            MainFrame.Navigate(new Main_empty());
+            MainFrame.Navigate(new Main());
+            MainFrame.Navigate(new Registration());
+
+            var vm = new ViewModel();
+            this.DataContext = vm;
+
+            // Устанавливаем Action для навигации из VM
+            vm.NavigateToPage = page =>
+            {
+                MainFrame.Navigate(page);
+            };
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -56,11 +70,11 @@ namespace Desktop
 
             if (isValid)
             {
-                Main_empty mainEmptyWindow = new Main_empty();
-                mainEmptyWindow.Show(); // Открываем новое окно
-                this.Close();
+                MainFrame.Navigate(new Main_empty());
             }
         }
+
+
 
         private bool IsValidEmail(string email)
         {
@@ -80,9 +94,7 @@ namespace Desktop
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Registration registrationWindow = new Registration();
-            registrationWindow.Show(); // Открываем новое окно
-            this.Close();
+            MainFrame.Navigate(new Registration());
 
         }
     }
