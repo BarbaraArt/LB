@@ -6,6 +6,7 @@
 
     <!-- Ссылка на словарь ресурсов (если не подключен в App.xaml) -->
     <Window.Resources>
+        
         <ResourceDictionary Source="MainResources.xaml"/>
     </Window.Resources>
 
