@@ -77,7 +77,7 @@ namespace Desktop.View
             }
             else
             {
-                // Если не все поля валидны, выводим общее сообщение об ошибке.
+                
                 MessageBox.Show("Пожалуйста, проверьте правильность заполнения всех полей.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -91,7 +91,7 @@ namespace Desktop.View
         {
             if (string.IsNullOrEmpty(email))
             {
-                return false; // Email пустой
+                return false; 
             }
 
             Regex regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
@@ -105,7 +105,7 @@ namespace Desktop.View
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Main());
+            this.NavigationService.Navigate(new MainWindow());
         }
     }
     

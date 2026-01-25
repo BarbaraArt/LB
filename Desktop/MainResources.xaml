@@ -3,11 +3,11 @@
                     xmlns:local="clr-namespace:Desktop">
     <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
 
-    <!-- 2. Цвета -->
+    
     <SolidColorBrush x:Key="MainRedBrush" Color="#FF6B6B"/>
     <SolidColorBrush x:Key="TaskBackgroundBrush" Color="White"/>
 
-    <!-- 3. Стиль для цветных категорий -->
+    
     <Style x:Key="CategoryTextStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="Gray"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -29,7 +29,7 @@
         </Style.Triggers>
     </Style>
 
-    <!-- 4. Стиль для зачеркнутого текста задачи -->
+    
     <Style x:Key="TaskTitleStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -41,7 +41,7 @@
         </Style.Triggers>
     </Style>
 
-    <!-- 5. Стиль круглой кнопки "+" -->
+    
     <Style x:Key="RoundAddButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource MainRedBrush}"/>
         <Setter Property="Foreground" Value="White"/>
@@ -59,7 +59,7 @@
         </Setter>
     </Style>
 
-    <!-- 6. Стиль кнопок "Готово" и "Удалить" -->
+    
     <Style x:Key="ActionButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource MainRedBrush}"/>
         <Setter Property="Foreground" Value="White"/>

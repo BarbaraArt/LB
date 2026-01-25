@@ -6,8 +6,8 @@
 
     <!-- Ссылка на словарь ресурсов (если не подключен в App.xaml) -->
     <Page.Resources>
-        
-        <ResourceDictionary Source="MainResources.xaml"/>
+
+        <ResourceDictionary Source="/Desktop;component/MainResources.xaml"/>
     </Page.Resources>
 
     <Grid Margin="0,0,10,0">
@@ -31,7 +31,7 @@
 
             <Button Content="+" Style="{StaticResource RoundAddButtonStyle}" 
                     Command="{Binding AddTaskCommand}" 
-                    Width="54" Height="55" Margin="0,180,0,0"/>
+                    Width="54" Height="55" Margin="0,180,0,0" Click="Button_Click_1"/>
         </StackPanel>
 
         <!-- Центральная панель -->

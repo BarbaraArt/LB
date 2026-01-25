@@ -21,8 +21,7 @@ namespace Desktop.View
     {
         public TaskItem NewTask { get; private set; }
         public event EventHandler<TaskItem> TaskCreated;
-
-        public event EventHandler Cancelled;
+       
 
         public AddTaskWindow()
         {
@@ -40,10 +39,10 @@ namespace Desktop.View
                 IsCompleted = false
             };
 
-            // Вызываем событие, что задача создана
+            
             TaskCreated?.Invoke(this, NewTask);
 
-            // Перейти назад или на нужную страницу
+
             if (this.NavigationService.CanGoBack)
                 this.NavigationService.GoBack();
         }

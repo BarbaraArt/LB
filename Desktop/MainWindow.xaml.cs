@@ -1,6 +1,7 @@
 ﻿using Desktop.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,26 +25,49 @@ namespace Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ObservableCollection<TaskItem> TaskList { get; } = new ObservableCollection<TaskItem>();
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new AddTaskWindow());
+
+            /*MainFrame.Navigate(new AddTaskWindow());
             MainFrame.Navigate(new Main_empty());
             MainFrame.Navigate(new Main());
-            MainFrame.Navigate(new Registration());
+            MainFrame.Navigate(new Registration());*/
+            DataContext = this;
 
             var vm = new ViewModel();
             this.DataContext = vm;
 
-            // Устанавливаем Action для навигации из VM
+            
             vm.NavigateToPage = page =>
             {
                 MainFrame.Navigate(page);
             };
         }
+
+        public async void NavigateWithFade(Page nextPage)
+        {
+            // Анимация затемнения
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300));
+            var tcs = new TaskCompletionSource<bool>();
+
+            fadeOut.Completed += (s, e) => tcs.SetResult(true);
+            MainFrame.BeginAnimation(Frame.OpacityProperty, fadeOut);
+
+            await tcs.Task;
+
+            // Навигация на новую страницу
+            MainFrame.Navigate(nextPage);
+
+            // Анимация появления
+            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
+            MainFrame.BeginAnimation(Frame.OpacityProperty, fadeIn);
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Сбрасываем ошибки
+            
             
             emailErrorLabel.Visibility = Visibility.Collapsed;
             passwordErrorLabel.Visibility = Visibility.Collapsed;
@@ -51,7 +76,7 @@ namespace Desktop
             string email = emailTextBox.Text;
             string password = passwordTextBox.Text;
 
-            bool isValid = true; // Флаг для общей валидности
+            bool isValid = true;
 
 
             if (!IsValidEmail(email))
@@ -70,17 +95,35 @@ namespace Desktop
 
             if (isValid)
             {
-                MainFrame.Navigate(new Main_empty());
+                ContentPanel.Visibility = Visibility.Collapsed;
+                NavigateWithFade(new Main_empty());
             }
         }
+        private void OpenAddTaskPage()
+        {
+            var addTaskPage = new AddTaskWindow();
+            addTaskPage.TaskCreated += AddTaskPage_TaskCreated;
+            MainFrame.Navigate(addTaskPage);
+        }
 
+        private void AddTaskPage_TaskCreated(object sender, TaskItem newTask)
+        {
+            
+            TaskList.Add(newTask);
+
+            
+            if (MainFrame.CanGoBack)
+                MainFrame.GoBack();
+
+           
+        }
 
 
         private bool IsValidEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
             {
-                return false; // Email пустой
+                return false; 
             }
 
             Regex regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
@@ -94,7 +137,9 @@ namespace Desktop
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Registration());
+            ContentPanel.Visibility = Visibility.Collapsed;
+            NavigateWithFade(new Registration());
+            
 
         }
     }
