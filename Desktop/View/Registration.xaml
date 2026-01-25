@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop"
         mc:Ignorable="d"
-        Title="Registration" Height="450" Width="650">
+        Title="Registration" Height="450" Width="650" Background="White">
     <Page.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">

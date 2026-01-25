@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -26,10 +27,10 @@ namespace Desktop
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new AddTaskWindow());
+            /*MainFrame.Navigate(new AddTaskWindow());
             MainFrame.Navigate(new Main_empty());
             MainFrame.Navigate(new Main());
-            MainFrame.Navigate(new Registration());
+            MainFrame.Navigate(new Registration());*/
 
             var vm = new ViewModel();
             this.DataContext = vm;
@@ -40,18 +41,38 @@ namespace Desktop
                 MainFrame.Navigate(page);
             };
         }
+
+        public async void NavigateWithFade(Page nextPage)
+        {
+           
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300));
+            var tcs = new TaskCompletionSource<bool>();
+
+            fadeOut.Completed += (s, e) => tcs.SetResult(true);
+            MainFrame.BeginAnimation(Frame.OpacityProperty, fadeOut);
+
+            await tcs.Task;
+
+            
+            MainFrame.Navigate(nextPage);
+
+           
+            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
+            MainFrame.BeginAnimation(Frame.OpacityProperty, fadeIn);
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Сбрасываем ошибки
+           
             
             emailErrorLabel.Visibility = Visibility.Collapsed;
             passwordErrorLabel.Visibility = Visibility.Collapsed;
-
+            
           
             string email = emailTextBox.Text;
             string password = passwordTextBox.Text;
 
-            bool isValid = true; // Флаг для общей валидности
+            bool isValid = true; 
 
 
             if (!IsValidEmail(email))
@@ -70,7 +91,8 @@ namespace Desktop
 
             if (isValid)
             {
-                MainFrame.Navigate(new Main_empty());
+                ContentPanel.Visibility = Visibility.Collapsed;
+                NavigateWithFade(new Main_empty());
             }
         }
 
@@ -80,7 +102,7 @@ namespace Desktop
         {
             if (string.IsNullOrEmpty(email))
             {
-                return false; // Email пустой
+                return false; 
             }
 
             Regex regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
@@ -94,7 +116,8 @@ namespace Desktop
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Registration());
+            ContentPanel.Visibility = Visibility.Collapsed;
+            NavigateWithFade(new Registration());
 
         }
     }

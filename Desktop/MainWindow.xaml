@@ -118,18 +118,31 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
-        <Image HorizontalAlignment="Left" Height="130" Margin="36,34,0,0" VerticalAlignment="Top" Width="142" Source="/Снимок экрана 2025-10-14 204257.png"/>
-        <Label Content="Добро пожаловать!" HorizontalAlignment="Left" Margin="300,47,0,0" VerticalAlignment="Top" FontSize="24"/>
-        <Label Content="Почта" HorizontalAlignment="Left" Margin="300,130,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Margin="300,177,0,0" TextWrapping="Wrap" Text="pangcheo1210@gmail.com" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="256" FontSize="14" /> 
-        <Label Content="Пароль" HorizontalAlignment="Left" Margin="300,203,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <TextBox x:Name="passwordTextBox"  HorizontalAlignment="Left" Margin="300,253,0,0" TextWrapping="Wrap" Text="Введите пароль" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="256" FontSize="14" Foreground="#FFCDCDCD"/>
-        <Label x:Name="passwordErrorLabel" Content="" HorizontalAlignment="Left" Margin="300,276,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
-        <TextBox HorizontalAlignment="Left" Margin="403,304,0,0" TextWrapping="Wrap" Text="Восстановить пароль"  VerticalAlignment="Top" Width="153" FontSize="14" BorderBrush="{x:Null}"/>
-        <Button Style="{DynamicResource кнопа1}" Content="Войти" HorizontalAlignment="Left" Margin="304,348,0,0" VerticalAlignment="Top" Width="252" Height="27" Background="#FFF96060" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click"/>
-        <Button Style="{DynamicResource кнопа2}" Content="Регистрация" HorizontalAlignment="Left" Margin="304,380,0,0" VerticalAlignment="Top" Width="252" Height="28" Background="#FFF96060" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_1"/>
-        <Label x:Name="emailErrorLabel" Content="" HorizontalAlignment="Left" Margin="400,200,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+    <Grid x:Name="RootGrid" Visibility="Visible">
+        <Frame x:Name="MainFrame" Background="White" NavigationUIVisibility="Hidden" />
+
+        <!-- ОБЕРНУ ВСЁ, ЧТО НАДО СКРЫВАТЬ В ЭТОТ PANEL -->
+        <Grid x:Name="ContentPanel">
+            <Image HorizontalAlignment="Left" Height="130" Margin="36,34,0,0" VerticalAlignment="Top" Width="142" Source="/Снимок экрана 2025-10-14 204257.png"/>
+            <Label Content="Добро пожаловать!" HorizontalAlignment="Left" Margin="300,47,0,0" VerticalAlignment="Top" FontSize="24"/>
+            <Label Content="Почта" HorizontalAlignment="Left" Margin="300,130,0,0" VerticalAlignment="Top" FontSize="18"/>
+            <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Margin="300,177,0,0" TextWrapping="Wrap" Text="pangcheo1210@gmail.com" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="256" FontSize="14" />
+            <Label Content="Пароль" HorizontalAlignment="Left" Margin="300,203,0,0" VerticalAlignment="Top" FontSize="18"/>
+            <TextBox x:Name="passwordTextBox"  HorizontalAlignment="Left" Margin="300,253,0,0" TextWrapping="Wrap" Text="Введите пароль" BorderThickness="0, 0, 0, 1" BorderBrush="LightGray" Background="Transparent" VerticalAlignment="Top" Width="256" FontSize="14" Foreground="#FFCDCDCD"/>
+            <Label x:Name="passwordErrorLabel" Content="" HorizontalAlignment="Left" Margin="300,276,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+            <TextBox HorizontalAlignment="Left" Margin="403,304,0,0" TextWrapping="Wrap" Text="Восстановить пароль"  VerticalAlignment="Top" Width="153" FontSize="14" BorderBrush="{x:Null}"/>
+            <Button Style="{DynamicResource кнопа1}" Content="Войти" HorizontalAlignment="Left" Margin="304,348,0,0" VerticalAlignment="Top" Width="252" Height="27" Background="#FFF96060" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click">
+                <Button.RenderTransform>
+                    <ScaleTransform x:Name="buttonScale" ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                </Button>
+            <Button Style="{DynamicResource кнопа2}" Content="Регистрация" HorizontalAlignment="Left" Margin="304,380,0,0" VerticalAlignment="Top" Width="252" Height="28" Background="#FFF96060" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_1">
+                <Button.RenderTransform>
+                    <ScaleTransform x:Name="buttonScale1" ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                
+            </Button>
+            <Label x:Name="emailErrorLabel" Content="" HorizontalAlignment="Left" Margin="400,200,0,0" VerticalAlignment="Top" Foreground="Red" Visibility="Collapsed"/>
+        </Grid>
     </Grid>
 </Window>

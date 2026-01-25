@@ -6,8 +6,8 @@
 
     <!-- Ссылка на словарь ресурсов (если не подключен в App.xaml) -->
     <Page.Resources>
-        
-        <ResourceDictionary Source="MainResources.xaml"/>
+
+        <ResourceDictionary Source="/Desktop;component/MainResources.xaml"/>
     </Page.Resources>
 
     <Grid Margin="0,0,10,0">
@@ -28,10 +28,9 @@
 
             <Button Content="Задачи" Command="{Binding ShowTasksCommand}" Background="Transparent" BorderBrush="Transparent" Padding="30,10" HorizontalContentAlignment="Left"/>
             <Button Content="История" Command="{Binding ShowHistoryCommand}" Background="Transparent" BorderBrush="Transparent" Padding="30,10" HorizontalContentAlignment="Left"/>
-
             <Button Content="+" Style="{StaticResource RoundAddButtonStyle}" 
                     Command="{Binding AddTaskCommand}" 
-                    Width="54" Height="55" Margin="0,180,0,0"/>
+                    Width="54" Height="55" Margin="0,180,0,0" Click="Button_Click_1"/>
         </StackPanel>
 
         <!-- Центральная панель -->
@@ -77,7 +76,7 @@
             </ListBox>
         </Grid>
 
-        <!-- Правая панель -->
+        
         <Border Grid.Column="2" Background="White" BorderBrush="#CCCCCC" Margin="10,40,10,40" CornerRadius="5" Padding="15" 
                 Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverter}}">
             <Border.Effect>
@@ -92,7 +91,7 @@
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Bottom">
-                    <!-- Используем стили кнопок из словаря -->
+                    
                     <Button Content="Готово" Command="{Binding CompleteCommand}" Style="{StaticResource TopRoundedButtonStyle}"/>
                     <Button Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource BottomRoundedButtonStyle}"/>
                 </StackPanel>
