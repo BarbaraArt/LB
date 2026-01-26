@@ -40,6 +40,7 @@ namespace Desktop
             Categories = new ObservableCollection<string> { "Дом", "Работа", "Учеба", "Отдых" };
 
             Tasks = new ObservableCollection<TaskItem>();
+
             FilteredTasks = CollectionViewSource.GetDefaultView(Tasks);
             FilteredTasks.Filter = TaskFilter;
 

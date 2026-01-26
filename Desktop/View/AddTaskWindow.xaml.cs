@@ -29,7 +29,7 @@ namespace Desktop.View
         }
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            NewTask = new TaskItem
+            var newTask = new TaskItem
             {
                 Title = TitleBox.Text,
                 Category = CategoryCombo.Text,
@@ -39,9 +39,7 @@ namespace Desktop.View
                 IsCompleted = false
             };
 
-            
-            TaskCreated?.Invoke(this, NewTask);
-
+            TaskCreated?.Invoke(this, newTask);
 
             if (this.NavigationService.CanGoBack)
                 this.NavigationService.GoBack();

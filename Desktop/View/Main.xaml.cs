@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Globalization;
+using Desktop.View; 
+using Desktop; 
+
 
 namespace Desktop.View
 {
@@ -20,16 +23,19 @@ namespace Desktop.View
     /// Логика взаимодействия для Main.xaml
     /// </summary>
     public partial class Main : Page
-    { 
-       
+    {
+
+        private ViewModel _vm;
+
         public Main()
         {
             InitializeComponent();
-            DataContext = new ViewModel();
+            _vm = new ViewModel();
+            DataContext = _vm;
         }
-       
 
-       
+
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
@@ -37,7 +43,15 @@ namespace Desktop.View
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new AddTaskWindow());
+            var addTaskWindow = new AddTaskWindow();
+            addTaskWindow.TaskCreated += AddTaskWindow_TaskCreated;
+            this.NavigationService.Navigate(addTaskWindow);
+        }
+
+        private void AddTaskWindow_TaskCreated(object sender, TaskItem newTask)
+        {
+            
+            _vm.Tasks.Add(newTask);
         }
     }
 }
