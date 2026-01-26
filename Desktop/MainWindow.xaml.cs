@@ -48,7 +48,7 @@ namespace Desktop
 
         public async void NavigateWithFade(Page nextPage)
         {
-            // Анимация затемнения
+            
             var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300));
             var tcs = new TaskCompletionSource<bool>();
 
@@ -57,10 +57,10 @@ namespace Desktop
 
             await tcs.Task;
 
-            // Навигация на новую страницу
+            
             MainFrame.Navigate(nextPage);
 
-            // Анимация появления
+            
             var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
             MainFrame.BeginAnimation(Frame.OpacityProperty, fadeIn);
         }
