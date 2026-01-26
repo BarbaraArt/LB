@@ -10,11 +10,18 @@ using System.Windows.Input;
 using System.Windows.Data;
 using Desktop.View;
 using System.Windows.Controls;
+using System.Collections.Specialized;
+
+
+
 
 namespace Desktop
 {
     public class ViewModel : INotifyPropertyChanged
     {
+       
+        private TaskStorageService _storageService = new TaskStorageService();
+
         public Action<Page> NavigateToPage { get; set; }
         private TaskItem _selectedTask;
         private bool _showOnlyCompleted = false;
@@ -34,10 +41,24 @@ namespace Desktop
         public ICommand AddTaskCommand { get; }
         public ICommand ShowTasksCommand { get; }
         public ICommand ShowHistoryCommand { get; }
-
+        public void SaveTasksOnExit()
+        {
+            _storageService.SaveTasks(Tasks);
+        }
         public ViewModel()
         {
+
+            Tasks = _storageService.LoadTasks();
+            
+
+            foreach (var task in Tasks)
+            {
+                task.PropertyChanged += Task_PropertyChanged;
+            }
+
             Categories = new ObservableCollection<string> { "Дом", "Работа", "Учеба", "Отдых" };
+            
+            Tasks.CollectionChanged += Tasks_CollectionChanged;
 
             Tasks = new ObservableCollection<TaskItem>();
 
@@ -46,17 +67,17 @@ namespace Desktop
 
             Tasks = new ObservableCollection<TaskItem>();
 
-            // Настраиваем фильтрацию
+           
             FilteredTasks = CollectionViewSource.GetDefaultView(Tasks);
             FilteredTasks.Filter = TaskFilter;
 
-            // Команда "Готово"
+           
             CompleteCommand = new RelayCommand(o => {
                 if (SelectedTask != null)
                 {
                     SelectedTask.IsCompleted = true;
-                    FilteredTasks.Refresh(); // Обновляем список, чтобы задача исчезла из текущего вида
-                    SelectedTask = null;    // Снимаем выделение
+                    FilteredTasks.Refresh(); 
+                    SelectedTask = null;   
                 }
             });
 
@@ -64,7 +85,7 @@ namespace Desktop
                 if (SelectedTask != null) Tasks.Remove(SelectedTask);
             });
 
-            // Команды переключения вкладок
+            
             ShowTasksCommand = new RelayCommand(o => {
                 _showOnlyCompleted = false;
                 FilteredTasks.Refresh();
@@ -78,15 +99,11 @@ namespace Desktop
             AddTaskCommand = new RelayCommand(o =>
             {
                 var addPage = new AddTaskWindow();
-
-                // Подписываемся на событие создания задачи
                 addPage.TaskCreated += (sender, newTask) =>
                 {
                     Tasks.Add(newTask);
                     FilteredTasks.Refresh();
                 };
-
-                // Вызываем навигацию в View через делегат
                 NavigateToPage?.Invoke(addPage);
             }); ;
         }
@@ -95,27 +112,53 @@ namespace Desktop
             if (obj is TaskItem task)
             {
                 if (_showOnlyCompleted)
-                    return task.IsCompleted; // В истории только выполненные
+                    return task.IsCompleted; 
                 else
-                    return !task.IsCompleted; // В задачах только невыполненные
+                    return !task.IsCompleted; 
             }
             return false;
         }
 
+        private void Tasks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            _storageService.SaveTasks(Tasks);
+
+            if (e.NewItems != null)
+            {
+                foreach (TaskItem newTask in e.NewItems)
+                    newTask.PropertyChanged += Task_PropertyChanged;
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (TaskItem oldTask in e.OldItems)
+                    oldTask.PropertyChanged -= Task_PropertyChanged;
+            }
+        }
+
+        private void Task_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _storageService.SaveTasks(Tasks);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 
-    // Простая реализация ICommand
+    
     public class RelayCommand : ICommand
     {
-        private readonly System.Action<object> _execute;
-        public RelayCommand(System.Action<object> execute) => _execute = execute;
+        private readonly Action<object> _execute;
+        public RelayCommand(Action<object> execute) => _execute = execute;
+
         public bool CanExecute(object parameter) => true;
+
         public void Execute(object parameter) => _execute(parameter);
-        public event System.EventHandler CanExecuteChanged;
+
+        public event EventHandler CanExecuteChanged;
     }
 
 

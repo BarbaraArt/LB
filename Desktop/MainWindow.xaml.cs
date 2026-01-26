@@ -26,6 +26,7 @@ namespace Desktop
     public partial class MainWindow : Window
     {
         public ObservableCollection<TaskItem> TaskList { get; } = new ObservableCollection<TaskItem>();
+        private ViewModel _viewModel;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,12 +35,14 @@ namespace Desktop
             MainFrame.Navigate(new Main_empty());
             MainFrame.Navigate(new Main());
             MainFrame.Navigate(new Registration());*/
+            _viewModel = new ViewModel();
+            this.DataContext = _viewModel;
             DataContext = this;
 
             var vm = new ViewModel();
             this.DataContext = vm;
 
-            
+
             vm.NavigateToPage = page =>
             {
                 MainFrame.Navigate(page);
@@ -48,7 +51,7 @@ namespace Desktop
 
         public async void NavigateWithFade(Page nextPage)
         {
-            
+
             var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300));
             var tcs = new TaskCompletionSource<bool>();
 
@@ -57,22 +60,22 @@ namespace Desktop
 
             await tcs.Task;
 
-            
+
             MainFrame.Navigate(nextPage);
 
-            
+
             var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
             MainFrame.BeginAnimation(Frame.OpacityProperty, fadeIn);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+
+
             emailErrorLabel.Visibility = Visibility.Collapsed;
             passwordErrorLabel.Visibility = Visibility.Collapsed;
 
-          
+
             string email = emailTextBox.Text;
             string password = passwordTextBox.Text;
 
@@ -108,14 +111,14 @@ namespace Desktop
 
         private void AddTaskPage_TaskCreated(object sender, TaskItem newTask)
         {
-            
+
             TaskList.Add(newTask);
 
-            
+
             if (MainFrame.CanGoBack)
                 MainFrame.GoBack();
 
-           
+
         }
 
 
@@ -123,7 +126,7 @@ namespace Desktop
         {
             if (string.IsNullOrEmpty(email))
             {
-                return false; 
+                return false;
             }
 
             Regex regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
@@ -139,11 +142,18 @@ namespace Desktop
         {
             ContentPanel.Visibility = Visibility.Collapsed;
             NavigateWithFade(new Registration());
-            
 
+
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            // Вызываем метод сохранения из ViewModel
+            _viewModel?.SaveTasksOnExit();
         }
     }
 }
-   
+
 
 
